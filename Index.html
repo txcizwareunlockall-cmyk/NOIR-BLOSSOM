@@ -1,0 +1,952 @@
+<store_code>
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NOIR BLOSSOM - Dark Sakura Streetwear</title>
+  <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+  <link href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)" rel="stylesheet">
+  <style>
+    @import url('[https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cinzel:wght@600;700;800&display=swap](https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cinzel:wght@600;700;800&display=swap)');
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #0d0614;
+      color: #f3e8ff;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, .brand-title {
+      font-family: 'Cinzel', serif;
+    }
+
+    /* Sakura Canvas Background */
+    #sakura-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Glassmorphic Translucency Effects */
+    .glass-panel {
+      background: rgba(22, 11, 36, 0.45);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 182, 193, 0.22);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+
+    .glass-card {
+      background: rgba(27, 13, 43, 0.38);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 182, 193, 0.18);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .glass-card:hover {
+      background: rgba(38, 18, 61, 0.55);
+      border-color: rgba(244, 114, 182, 0.6);
+      transform: translateY(-6px);
+      box-shadow: 0 15px 35px rgba(244, 114, 182, 0.2);
+    }
+
+    .glass-modal {
+      background: rgba(18, 8, 30, 0.75);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(244, 114, 182, 0.35);
+    }
+
+    .glass-nav {
+      background: rgba(13, 6, 20, 0.6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 182, 193, 0.2);
+    }
+
+    .glass-input {
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 182, 193, 0.25);
+      color: #fff;
+    }
+
+    .glass-input:focus {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: #f472b6;
+      outline: none;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(13, 6, 20, 0.8);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(244, 114, 182, 0.4);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(244, 114, 182, 0.7);
+    }
+
+    /* Animated Glow Gradient Button */
+    .btn-pink-glow {
+      background: linear-gradient(135deg, rgba(244, 114, 182, 0.8), rgba(217, 70, 239, 0.8));
+      backdrop-filter: blur(4px);
+      box-shadow: 0 0 20px rgba(244, 114, 182, 0.4);
+      transition: all 0.3s ease;
+    }
+    .btn-pink-glow:hover {
+      box-shadow: 0 0 30px rgba(244, 114, 182, 0.7);
+      transform: scale(1.02);
+    }
+
+    /* Toast Notification Animation */
+    @keyframes slideUp {
+      from { transform: translateY(100%) scale(0.9); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    .toast-anim {
+      animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  </style>
+</head>
+<body class="min-h-screen relative selection:bg-pink-500 selection:text-white">
+
+  <!-- Canvas Background for Cherry Blossom Tree & Falling Petals -->
+  <canvas id="sakura-canvas"></canvas>
+
+  <!-- Navigation Bar -->
+  <header class="sticky top-0 z-40 glass-nav transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-full bg-pink-500/20 border border-pink-400/40 flex items-center justify-center text-pink-300 group-hover:scale-110 transition-transform">
+          <i class="fa-solid font-bold text-lg">🌸</i>
+        </div>
+        <div>
+          <span class="brand-title text-xl sm:text-2xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-pink-200 via-pink-300 to-purple-400">
+            NOIR BLOSSOM
+          </span>
+          <span class="block text-[10px] tracking-[0.3em] text-pink-300/70 font-semibold uppercase -mt-1">
+            Dark Sakura Apparel
+          </span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-pink-100/80">
+        <button onclick="filterCategory('All')" class="hover:text-pink-300 transition-colors">Catalog</button>
+        <button onclick="filterCategory('Hoodies')" class="hover:text-pink-300 transition-colors">Hoodies</button>
+        <button onclick="filterCategory('Bottoms')" class="hover:text-pink-300 transition-colors">Sweatpants</button>
+        <a href="#about" class="hover:text-pink-300 transition-colors">Story</a>
+      </nav>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-4">
+        <!-- Manage Products Button -->
+        <button onclick="toggleProductManager()" class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold glass-panel text-pink-200 hover:border-pink-400 transition">
+          <i class="fa-solid fa-plus-circle text-pink-400"></i>
+          <span>Add Products</span>
+        </button>
+
+        <!-- Cart Button -->
+        <button onclick="toggleCartDrawer()" class="relative p-2.5 rounded-full glass-panel text-pink-200 hover:text-white transition group">
+          <i class="fa-solid fa-bag-shopping text-lg group-hover:scale-110 transition-transform"></i>
+          <span id="cart-count" class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 text-[11px] font-bold text-white flex items-center justify-center shadow-lg border border-pink-300/30">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
+    <div class="glass-panel rounded-3xl p-8 sm:p-12 relative overflow-hidden text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-8">
+      <div class="max-w-2xl">
+        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-pink-500/20 text-pink-300 border border-pink-400/30 mb-4">
+          <i class="fa-solid fa-sparkles text-pink-400"></i> NOIR BLOSSOM Dropshipping Collection
+        </span>
+        <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-wide leading-tight mb-4">
+          GOTHIC Y2K <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-pink-400 to-purple-300">NOIR BLOSSOM</span>
+        </h1>
+        <p class="text-pink-100/70 text-sm sm:text-base leading-relaxed mb-6">
+          Premium gothic graphics, dark Y2K washes, and 3D Sakura Japanese embroidery. Handpicked pieces styled for oversized aesthetic drops.
+        </p>
+        <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
+          <a href="#catalog" class="px-7 py-3 rounded-xl btn-pink-glow text-white font-bold text-sm tracking-wide flex items-center gap-2">
+            Explore Collection <i class="fa-solid fa-arrow-down text-xs"></i>
+          </a>
+          <button onclick="toggleProductManager()" class="px-6 py-3 rounded-xl glass-panel text-pink-200 hover:text-white font-semibold text-sm transition">
+            + Add Shein Products
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Stats / Badges -->
+      <div class="grid grid-cols-2 gap-4 w-full md:w-auto min-w-[240px]">
+        <div class="glass-card p-4 rounded-2xl text-center">
+          <div class="text-2xl font-bold text-pink-300 mb-1">100%</div>
+          <div class="text-xs text-pink-100/60 font-medium">Authentic Quality</div>
+        </div>
+        <div class="glass-card p-4 rounded-2xl text-center">
+          <div class="text-2xl font-bold text-purple-300 mb-1">Express</div>
+          <div class="text-xs text-pink-100/60 font-medium">Worldwide Shipping</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Store Section -->
+  <main id="catalog" class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Filter & Search Controls -->
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
+      <!-- Category Pills -->
+      <div class="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-2 sm:pb-0" id="category-pills">
+        <button onclick="filterCategory('All')" class="cat-pill active px-4 py-2 rounded-xl text-xs font-semibold bg-pink-500 text-white shadow-lg transition">All Apparel</button>
+        <button onclick="filterCategory('Hoodies')" class="cat-pill px-4 py-2 rounded-xl text-xs font-semibold glass-panel text-pink-200 hover:border-pink-400 transition">Hoodies</button>
+        <button onclick="filterCategory('Bottoms')" class="cat-pill px-4 py-2 rounded-xl text-xs font-semibold glass-panel text-pink-200 hover:border-pink-400 transition">Sweatpants</button>
+      </div>
+
+      <!-- Search Input -->
+      <div class="relative w-full sm:w-72">
+        <input type="text" id="search-input" oninput="handleSearch()" placeholder="Search NOIR BLOSSOM..." class="w-full pl-10 pr-4 py-2 rounded-xl glass-input text-xs">
+        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-pink-300/50 text-xs"></i>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Products dynamically rendered here -->
+    </div>
+
+    <!-- Empty Catalog Banner -->
+    <div id="empty-catalog" class="hidden text-center py-16 glass-panel rounded-3xl">
+      <i class="fa-solid fa-box-open text-5xl text-pink-400/40 mb-4"></i>
+      <h3 class="text-xl font-bold text-white mb-2">No Items Found</h3>
+      <p class="text-sm text-pink-200/60 mb-6">Try searching for another keyword or add new items.</p>
+      <button onclick="toggleProductManager()" class="px-6 py-2.5 rounded-xl btn-pink-glow text-white text-xs font-bold">
+        Add Product Now
+      </button>
+    </div>
+  </main>
+
+  <!-- Product Quick View Modal -->
+  <div id="product-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md hidden">
+    <div class="glass-modal rounded-3xl max-w-3xl w-full p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto">
+      <button onclick="closeProductModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full glass-panel flex items-center justify-center text-pink-200 hover:text-white text-sm">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Image & Shein Source Link -->
+        <div class="space-y-3">
+          <div class="relative aspect-[3/4] rounded-2xl overflow-hidden glass-panel border border-pink-300/30">
+            <img id="modal-img" src="" alt="Product" class="w-full h-full object-cover">
+          </div>
+          <a id="modal-shein-link" href="#" target="_blank" class="flex items-center justify-center gap-2 py-2 px-4 rounded-xl glass-panel text-pink-300 text-xs hover:border-pink-400 transition font-medium">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> View Shein Supplier Page
+          </a>
+        </div>
+
+        <!-- Details -->
+        <div class="flex flex-col justify-between">
+          <div>
+            <span id="modal-badge" class="inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-pink-500/20 text-pink-300 border border-pink-400/30 mb-3">
+              NOIR BLOSSOM EXCLUSIVE
+            </span>
+            <h2 id="modal-title" class="text-xl sm:text-2xl font-bold text-white mb-2">Product Title</h2>
+            
+            <div class="flex items-center gap-3 mb-4">
+              <span id="modal-price" class="text-2xl font-extrabold text-pink-300">$0.00</span>
+              <span id="modal-reg-price" class="text-sm text-pink-200/40 line-through">$0.00</span>
+              <span class="text-xs text-emerald-400 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">In Stock</span>
+            </div>
+
+            <p id="modal-desc" class="text-xs text-pink-100/70 leading-relaxed mb-6">
+              Description text...
+            </p>
+
+            <!-- Size Selector -->
+            <div class="mb-5">
+              <label class="block text-xs font-semibold text-pink-200 mb-2">Select Size</label>
+              <div id="modal-sizes" class="flex flex-wrap gap-2">
+                <!-- Sizes dynamically added -->
+              </div>
+            </div>
+
+            <!-- Color Selector -->
+            <div class="mb-6">
+              <label class="block text-xs font-semibold text-pink-200 mb-2">Color Variant</label>
+              <div id="modal-colors" class="flex flex-wrap gap-2">
+                <!-- Colors dynamically added -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Add to Cart CTA -->
+          <button onclick="addModalItemToCart()" class="w-full py-3.5 rounded-xl btn-pink-glow text-white font-bold text-sm tracking-wide flex items-center justify-center gap-2">
+            <i class="fa-solid fa-cart-plus"></i> Add To Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shopping Cart Drawer -->
+  <div id="cart-drawer" class="fixed inset-y-0 right-0 z-50 w-full sm:w-96 glass-modal shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="p-6 border-b border-pink-300/20 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-bag-shopping text-pink-400"></i>
+        <h3 class="font-bold text-lg text-white">NOIR BLOSSOM Bag</h3>
+      </div>
+      <button onclick="toggleCartDrawer()" class="w-8 h-8 rounded-full glass-panel flex items-center justify-center text-pink-200 hover:text-white">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+    </div>
+
+    <!-- Cart Items List -->
+    <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4">
+      <!-- Dynamic cart items -->
+    </div>
+
+    <!-- Cart Footer & Checkout -->
+    <div class="p-6 border-t border-pink-300/20 space-y-4">
+      <div class="space-y-2 text-xs text-pink-200/80">
+        <div class="flex justify-between">
+          <span>Subtotal</span>
+          <span id="cart-subtotal" class="font-semibold text-white">$0.00</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Worldwide Shipping</span>
+          <span class="text-emerald-400 font-semibold">FREE</span>
+        </div>
+        <div class="flex justify-between text-sm font-bold text-white pt-2 border-t border-pink-300/10">
+          <span>Total</span>
+          <span id="cart-total" class="text-pink-300">$0.00</span>
+        </div>
+      </div>
+
+      <button onclick="checkout()" class="w-full py-3.5 rounded-xl btn-pink-glow text-white font-bold text-sm flex items-center justify-center gap-2">
+        <span>Proceed To Checkout</span>
+        <i class="fa-solid fa-arrow-right text-xs"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Add/Manage Products Drawer -->
+  <div id="product-manager-drawer" class="fixed inset-y-0 left-0 z-50 w-full sm:w-[420px] glass-modal shadow-2xl transform -translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="p-6 border-b border-pink-300/20 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-sliders text-pink-400"></i>
+        <h3 class="font-bold text-lg text-white">NOIR BLOSSOM Manager</h3>
+      </div>
+      <button onclick="toggleProductManager()" class="w-8 h-8 rounded-full glass-panel flex items-center justify-center text-pink-200 hover:text-white">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto p-6 space-y-4">
+      <form id="add-product-form" onsubmit="handleAddProduct(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-pink-200 mb-1">Product Title</label>
+          <input type="text" id="p-title" required placeholder="e.g. NOIR BLOSSOM Oversized Hoodie" class="w-full p-2.5 rounded-xl glass-input text-xs">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-pink-200 mb-1">Selling Price ($)</label>
+            <input type="number" step="0.01" id="p-price" required placeholder="34.99" class="w-full p-2.5 rounded-xl glass-input text-xs">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-pink-200 mb-1">Reg Price ($)</label>
+            <input type="number" step="0.01" id="p-regprice" placeholder="49.99" class="w-full p-2.5 rounded-xl glass-input text-xs">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-pink-200 mb-1">Category</label>
+          <select id="p-category" class="w-full p-2.5 rounded-xl glass-input text-xs bg-slate-900 text-white">
+            <option value="Hoodies">Hoodies</option>
+            <option value="Bottoms">Bottoms / Sweatpants</option>
+            <option value="Tops">Tops / Tees</option>
+            <option value="Outerwear">Outerwear</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-pink-200 mb-1">Image URL</label>
+          <input type="url" id="p-image" required placeholder="[https://img.shein.com/](https://img.shein.com/)..." class="w-full p-2.5 rounded-xl glass-input text-xs">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-pink-200 mb-1">Shein Product Link</label>
+          <input type="url" id="p-sheinurl" placeholder="[https://au.shein.com/](https://au.shein.com/)..." class="w-full p-2.5 rounded-xl glass-input text-xs">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-pink-200 mb-1">Description</label>
+          <textarea id="p-desc" rows="3" placeholder="Product details, fabric, fit style..." class="w-full p-2.5 rounded-xl glass-input text-xs"></textarea>
+        </div>
+
+        <button type="submit" class="w-full py-3 rounded-xl btn-pink-glow text-white font-bold text-xs">
+          + Add Product To Store
+        </button>
+      </form>
+
+      <div class="pt-4 border-t border-pink-300/20">
+        <h4 class="text-xs font-bold text-pink-300 mb-2">Loaded Items (<span id="manager-count">0</span>)</h4>
+        <div id="manager-item-list" class="space-y-2 max-h-48 overflow-y-auto">
+          <!-- List items dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Sales Toast Notification -->
+  <div id="toast-notification" class="fixed bottom-6 left-6 z-40 hidden">
+    <div class="glass-panel rounded-2xl p-4 flex items-center gap-3 border border-pink-400/40 shadow-2xl toast-anim max-w-sm">
+      <img id="toast-img" src="" class="w-12 h-12 rounded-xl object-cover border border-pink-300/30">
+      <div>
+        <div class="text-[11px] font-bold text-pink-300 flex items-center gap-1">
+          <i class="fa-solid fa-circle-check text-emerald-400"></i> Just Purchased
+        </div>
+        <p id="toast-msg" class="text-xs font-medium text-white truncate max-w-[200px]">Product Name</p>
+        <span id="toast-time" class="text-[10px] text-pink-200/50">2 minutes ago</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Store JavaScript Application Logic -->
+  <script>
+    // -------------------------------------------------------------
+    // INITIAL PRODUCTS DATABASE
+    // -------------------------------------------------------------
+    let products = [
+      {
+        id: 1,
+        title: "PAVTROS Men's Dark Street 3D Embroidered Pink Sweatpants",
+        category: "Bottoms",
+        price: 34.99,
+        regPrice: 49.99,
+        badge: "HOT DROP",
+        rating: 4.9,
+        image: "[https://img.ltwebstatic.com/images3_pi/2024/08/21/53/172422709298539066eb4b13a17e0e7a2b9ea156e5_thumbnail_600x.webp](https://img.ltwebstatic.com/images3_pi/2024/08/21/53/172422709298539066eb4b13a17e0e7a2b9ea156e5_thumbnail_600x.webp)",
+        sheinUrl: "[https://au.shein.com/PAVTROS-Men-s-Streetwear-Best-Seller-Dark-Street-Embroidery-3D-Embroidery-Daily-Wear-Versatile-Boyfriend-Husband-Gift-Anniversary-Gift-Pink-Sweatpants-p-484448270.html](https://au.shein.com/PAVTROS-Men-s-Streetwear-Best-Seller-Dark-Street-Embroidery-3D-Embroidery-Daily-Wear-Versatile-Boyfriend-Husband-Gift-Anniversary-Gift-Pink-Sweatpants-p-484448270.html)",
+        sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+        colors: ["Pink", "Black"],
+        description: "PAVTROS signature 3D dark streetwear embroidery on soft plush pink sweatpants. Relaxed athletic fit with elastic drawstring waist."
+      },
+      {
+        id: 2,
+        title: "Manfinity ZONE917 Men's Cherry Blossom Print Sweatpants",
+        category: "Bottoms",
+        price: 29.99,
+        regPrice: 42.99,
+        badge: "NOIR DROP",
+        rating: 4.8,
+        image: "[https://img.ltwebstatic.com/images3_pi/2024/05/22/88/171636287040a455a2c4e207604d5b274cdd20bdca_thumbnail_600x.webp](https://img.ltwebstatic.com/images3_pi/2024/05/22/88/171636287040a455a2c4e207604d5b274cdd20bdca_thumbnail_600x.webp)",
+        sheinUrl: "[https://au.shein.com/Manfinity-ZONE917-Men-s-Grey-Heather-Pink-Cherry-Blossom-Flower-Letter-Print-Sweatpants-p-409674128.html](https://au.shein.com/Manfinity-ZONE917-Men-s-Grey-Heather-Pink-Cherry-Blossom-Flower-Letter-Print-Sweatpants-p-409674128.html)",
+        sizes: ["S", "M", "L", "XL", "XXL"],
+        colors: ["Grey Heather", "Black"],
+        description: "Vintage Japanese botanical petal & sakura branch graphic print. Y2K wide-leg loose streetwear jogger style with breathable cotton fabric."
+      },
+      {
+        id: 3,
+        title: "ROMWE MEN Gothic Graphic Zip-Up Hoodie",
+        category: "Hoodies",
+        price: 32.99,
+        regPrice: 45.99,
+        badge: "TRENDING",
+        rating: 4.7,
+        image: "[https://img.ltwebstatic.com/images3_pi/2023/12/11/4a/17022879580b06b9ebbd62a6aaefeebe895eb487a5_thumbnail_600x.webp](https://img.ltwebstatic.com/images3_pi/2023/12/11/4a/17022879580b06b9ebbd62a6aaefeebe895eb487a5_thumbnail_600x.webp)",
+        sheinUrl: "[https://au.shein.com/ROMWE-MEN-Spring-Casual-Graphic-Men-S-Gothic-Print-Zip-Front-Casual-Hoodie-Sweatshirt-Long-Sleeve-Top-p-282066145.html](https://au.shein.com/ROMWE-MEN-Spring-Casual-Graphic-Men-S-Gothic-Print-Zip-Front-Casual-Hoodie-Sweatshirt-Long-Sleeve-Top-p-282066145.html)",
+        sizes: ["S", "M", "L", "XL", "XXL"],
+        colors: ["Black", "Charcoal"],
+        description: "Gothic dark aesthetic long sleeve zip-front hoodie featuring drop shoulder streetwear silhouette and durable metal zipper."
+      },
+      {
+        id: 4,
+        title: "Manfinity EMRG Men's Washed Black Floral Cross Zip Hoodie",
+        category: "Hoodies",
+        price: 38.99,
+        regPrice: 54.99,
+        badge: "PREMIUM",
+        rating: 5.0,
+        image: "[https://img.ltwebstatic.com/images3_pi/2024/09/20/86/1726823908db6fae8df310864bbff309bbcfcd690a_thumbnail_600x.webp](https://img.ltwebstatic.com/images3_pi/2024/09/20/86/1726823908db6fae8df310864bbff309bbcfcd690a_thumbnail_600x.webp)",
+        sheinUrl: "[https://au.shein.com/Manfinity-EMRG-Men-s-Washed-Black-Full-Zip-Hooded-Sweatshirt-Vintage-Gothic-Y2K-Style-Long-Sleeve-Sweatshirt-Hoodie-Jacket-Casual-Streetwear-Floral-Cross-Letter-Print-Top-Suitable-For-Outings-Concerts-Music-Festivals-Coachella-Parties-Spring-Vacation-p-563390006.html](https://au.shein.com/Manfinity-EMRG-Men-s-Washed-Black-Full-Zip-Hooded-Sweatshirt-Vintage-Gothic-Y2K-Style-Long-Sleeve-Sweatshirt-Hoodie-Jacket-Casual-Streetwear-Floral-Cross-Letter-Print-Top-Suitable-For-Outings-Concerts-Music-Festivals-Coachella-Parties-Spring-Vacation-p-563390006.html)",
+        sizes: ["S", "M", "L", "XL", "XXL"],
+        colors: ["Washed Black"],
+        description: "Heavyweight acid-washed charcoal fabric featuring intricate gothic floral cross back artwork and full zip closure."
+      }
+    ];
+
+    let cart = [];
+    let selectedCategory = 'All';
+    let currentModalProduct = null;
+    let selectedSize = '';
+    let selectedColor = '';
+
+    // Initialize Page
+    document.addEventListener('DOMContentLoaded', () => {
+      renderProducts();
+      initSakuraCanvas();
+      startLiveToasts();
+    });
+
+    // -------------------------------------------------------------
+    // RENDER PRODUCTS
+    // -------------------------------------------------------------
+    function renderProducts() {
+      const grid = document.getElementById('product-grid');
+      const emptyBanner = document.getElementById('empty-catalog');
+      const searchVal = document.getElementById('search-input').value.toLowerCase();
+
+      let filtered = products.filter(p => {
+        const matchesCategory = selectedCategory === 'All' || p.category === selectedCategory;
+        const matchesSearch = p.title.toLowerCase().includes(searchVal);
+        return matchesCategory && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        emptyBanner.classList.remove('hidden');
+        return;
+      }
+
+      emptyBanner.classList.add('hidden');
+      grid.innerHTML = filtered.map(p => `
+        <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between group">
+          <div class="relative aspect-[3/4] overflow-hidden bg-slate-900/40">
+            <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='[https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600&auto=format&fit=crop&q=60](https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600&auto=format&fit=crop&q=60)'">
+            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-pink-500/80 text-white backdrop-blur-md shadow-md">
+              ${p.badge || 'NOIR'}
+            </span>
+            <button onclick="openProductModal(${p.id})" class="absolute bottom-3 right-3 w-10 h-10 rounded-full glass-modal flex items-center justify-center text-pink-200 hover:text-white hover:scale-110 transition">
+              <i class="fa-solid fa-eye text-xs"></i>
+            </button>
+          </div>
+
+          <div class="p-4 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between text-[11px] text-pink-300/70 mb-1">
+                <span>${p.category}</span>
+                <span class="flex items-center gap-1 text-amber-300 font-semibold">
+                  <i class="fa-solid fa-star text-[10px]"></i> ${p.rating}
+                </span>
+              </div>
+              <h3 class="font-semibold text-sm text-white line-clamp-2 mb-2 group-hover:text-pink-300 transition-colors">
+                ${p.title}
+              </h3>
+            </div>
+
+            <div class="pt-3 border-t border-pink-300/10 flex items-center justify-between">
+              <div>
+                <span class="text-base font-extrabold text-pink-300">$${p.price.toFixed(2)}</span>
+                ${p.regPrice ? `<span class="text-xs text-pink-200/40 line-through ml-1.5">$${p.regPrice.toFixed(2)}</span>` : ''}
+              </div>
+              <button onclick="quickAddToCart(${p.id})" class="px-3 py-1.5 rounded-lg btn-pink-glow text-white text-xs font-semibold flex items-center gap-1.5">
+                <i class="fa-solid fa-plus text-[10px]"></i> Cart
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      renderManagerList();
+    }
+
+    // -------------------------------------------------------------
+    // CATEGORY FILTER & SEARCH
+    // -------------------------------------------------------------
+    function filterCategory(cat) {
+      selectedCategory = cat;
+      const buttons = document.querySelectorAll('#category-pills button');
+      buttons.forEach(btn => {
+        if (btn.innerText.includes(cat) || (cat === 'All' && btn.innerText.includes('All'))) {
+          btn.className = "cat-pill active px-4 py-2 rounded-xl text-xs font-semibold bg-pink-500 text-white shadow-lg transition";
+        } else {
+          btn.className = "cat-pill px-4 py-2 rounded-xl text-xs font-semibold glass-panel text-pink-200 hover:border-pink-400 transition";
+        }
+      });
+      renderProducts();
+    }
+
+    function handleSearch() {
+      renderProducts();
+    }
+
+    // -------------------------------------------------------------
+    // PRODUCT QUICK VIEW MODAL
+    // -------------------------------------------------------------
+    function openProductModal(id) {
+      currentModalProduct = products.find(p => p.id === id);
+      if (!currentModalProduct) return;
+
+      document.getElementById('modal-img').src = currentModalProduct.image;
+      document.getElementById('modal-title').innerText = currentModalProduct.title;
+      document.getElementById('modal-price').innerText = `$${currentModalProduct.price.toFixed(2)}`;
+      document.getElementById('modal-reg-price').innerText = currentModalProduct.regPrice ? `$${currentModalProduct.regPrice.toFixed(2)}` : '';
+      document.getElementById('modal-desc').innerText = currentModalProduct.description;
+      document.getElementById('modal-shein-link').href = currentModalProduct.sheinUrl || '#';
+
+      // Render Sizes
+      const sizesContainer = document.getElementById('modal-sizes');
+      selectedSize = currentModalProduct.sizes[0] || 'M';
+      sizesContainer.innerHTML = currentModalProduct.sizes.map(s => `
+        <button onclick="selectSize('${s}')" class="size-btn px-3 py-1.5 rounded-lg border border-pink-300/30 text-xs font-semibold text-pink-200 hover:border-pink-400 ${s === selectedSize ? 'bg-pink-500 text-white border-pink-500' : ''}">
+          ${s}
+        </button>
+      `).join('');
+
+      // Render Colors
+      const colorsContainer = document.getElementById('modal-colors');
+      selectedColor = currentModalProduct.colors[0] || 'Default';
+      colorsContainer.innerHTML = currentModalProduct.colors.map(c => `
+        <button onclick="selectColor('${c}')" class="color-btn px-3 py-1.5 rounded-lg border border-pink-300/30 text-xs font-semibold text-pink-200 hover:border-pink-400 ${c === selectedColor ? 'bg-pink-500 text-white border-pink-500' : ''}">
+          ${c}
+        </button>
+      `).join('');
+
+      document.getElementById('product-modal').classList.remove('hidden');
+    }
+
+    function closeProductModal() {
+      document.getElementById('product-modal').classList.add('hidden');
+    }
+
+    function selectSize(s) {
+      selectedSize = s;
+      document.querySelectorAll('.size-btn').forEach(btn => {
+        if (btn.innerText === s) {
+          btn.className = "size-btn px-3 py-1.5 rounded-lg border text-xs font-semibold bg-pink-500 text-white border-pink-500";
+        } else {
+          btn.className = "size-btn px-3 py-1.5 rounded-lg border border-pink-300/30 text-xs font-semibold text-pink-200 hover:border-pink-400";
+        }
+      });
+    }
+
+    function selectColor(c) {
+      selectedColor = c;
+      document.querySelectorAll('.color-btn').forEach(btn => {
+        if (btn.innerText === c) {
+          btn.className = "color-btn px-3 py-1.5 rounded-lg border text-xs font-semibold bg-pink-500 text-white border-pink-500";
+        } else {
+          btn.className = "color-btn px-3 py-1.5 rounded-lg border border-pink-300/30 text-xs font-semibold text-pink-200 hover:border-pink-400";
+        }
+      });
+    }
+
+    function addModalItemToCart() {
+      if (!currentModalProduct) return;
+      addToCart(currentModalProduct, selectedSize, selectedColor);
+      closeProductModal();
+      toggleCartDrawer(true);
+    }
+
+    function quickAddToCart(id) {
+      const p = products.find(item => item.id === id);
+      if (p) {
+        addToCart(p, p.sizes[0] || 'M', p.colors[0] || 'Default');
+        toggleCartDrawer(true);
+      }
+    }
+
+    // -------------------------------------------------------------
+    // CART DRAWER LOGIC
+    // -------------------------------------------------------------
+    function addToCart(product, size, color) {
+      const existing = cart.find(item => item.id === product.id && item.size === size && item.color === color);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({
+          id: product.id,
+          title: product.title,
+          price: product.price,
+          image: product.image,
+          size: size,
+          color: color,
+          qty: 1
+        });
+      }
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const cartItemsContainer = document.getElementById('cart-items');
+      const cartCount = document.getElementById('cart-count');
+      const subtotalEl = document.getElementById('cart-subtotal');
+      const totalEl = document.getElementById('cart-total');
+
+      const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+      cartCount.innerText = totalItems;
+      subtotalEl.innerText = `$${subtotal.toFixed(2)}`;
+      totalEl.innerText = `$${subtotal.toFixed(2)}`;
+
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = `
+          <div class="text-center py-12 text-pink-200/50">
+            <i class="fa-solid fa-basket-shopping text-3xl mb-3"></i>
+            <p class="text-xs">Your NOIR BLOSSOM bag is empty.</p>
+          </div>
+        `;
+        return;
+      }
+
+      cartItemsContainer.innerHTML = cart.map((item, idx) => `
+        <div class="glass-card p-3 rounded-xl flex items-center gap-3">
+          <img src="${item.image}" class="w-14 h-16 object-cover rounded-lg border border-pink-300/20">
+          <div class="flex-1 min-w-0">
+            <h4 class="text-xs font-semibold text-white truncate">${item.title}</h4>
+            <div class="text-[10px] text-pink-200/60 mt-0.5">Size: ${item.size} | Color: ${item.color}</div>
+            <div class="text-xs font-bold text-pink-300 mt-1">$${item.price.toFixed(2)}</div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="changeQty(${idx}, -1)" class="w-6 h-6 rounded glass-panel flex items-center justify-center text-xs text-pink-200">-</button>
+            <span class="text-xs font-bold text-white">${item.qty}</span>
+            <button onclick="changeQty(${idx}, 1)" class="w-6 h-6 rounded glass-panel flex items-center justify-center text-xs text-pink-200">+</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function changeQty(index, delta) {
+      cart[index].qty += delta;
+      if (cart[index].qty <= 0) {
+        cart.splice(index, 1);
+      }
+      updateCartUI();
+    }
+
+    function toggleCartDrawer(open) {
+      const drawer = document.getElementById('cart-drawer');
+      if (open === true) {
+        drawer.classList.remove('translate-x-full');
+      } else if (open === false) {
+        drawer.classList.add('translate-x-full');
+      } else {
+        drawer.classList.toggle('translate-x-full');
+      }
+    }
+
+    function checkout() {
+      if (cart.length === 0) {
+        alert('Your cart is empty!');
+        return;
+      }
+      alert('Thank you for shopping at NOIR BLOSSOM! Redirecting to secure dropshipping checkout...');
+      cart = [];
+      updateCartUI();
+      toggleCartDrawer(false);
+    }
+
+    // -------------------------------------------------------------
+    // MANAGE / ADD PRODUCTS DRAWER
+    // -------------------------------------------------------------
+    function toggleProductManager() {
+      const drawer = document.getElementById('product-manager-drawer');
+      drawer.classList.toggle('-translate-x-full');
+    }
+
+    function handleAddProduct(e) {
+      e.preventDefault();
+      const newProd = {
+        id: Date.now(),
+        title: document.getElementById('p-title').value,
+        price: parseFloat(document.getElementById('p-price').value),
+        regPrice: parseFloat(document.getElementById('p-regprice').value) || null,
+        category: document.getElementById('p-category').value,
+        image: document.getElementById('p-image').value,
+        sheinUrl: document.getElementById('p-sheinurl').value,
+        description: document.getElementById('p-desc').value || 'NOIR BLOSSOM streetwear edition.',
+        badge: 'NEW DROP',
+        rating: 5.0,
+        sizes: ["S", "M", "L", "XL"],
+        colors: ["Default"]
+      };
+
+      products.unshift(newProd);
+      renderProducts();
+      document.getElementById('add-product-form').reset();
+      alert('Product added successfully to NOIR BLOSSOM catalog!');
+    }
+
+    function renderManagerList() {
+      const list = document.getElementById('manager-item-list');
+      document.getElementById('manager-count').innerText = products.length;
+
+      list.innerHTML = products.map(p => `
+        <div class="glass-panel p-2 rounded-lg flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2 truncate">
+            <img src="${p.image}" class="w-7 h-7 object-cover rounded">
+            <span class="truncate max-w-[180px] text-white">${p.title}</span>
+          </div>
+          <button onclick="deleteProduct(${p.id})" class="text-rose-400 hover:text-rose-300 p-1">
+            <i class="fa-solid fa-trash-can text-xs"></i>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function deleteProduct(id) {
+      products = products.filter(p => p.id !== id);
+      renderProducts();
+    }
+
+    // -------------------------------------------------------------
+    // LIVE PURCHASE TOAST NOTIFICATIONS
+    // -------------------------------------------------------------
+    function startLiveToasts() {
+      const toast = document.getElementById('toast-notification');
+      const img = document.getElementById('toast-img');
+      const msg = document.getElementById('toast-msg');
+      const times = ['Just now', '1 min ago', '3 mins ago', '5 mins ago'];
+
+      setInterval(() => {
+        if (products.length === 0) return;
+        const randomProduct = products[Math.floor(Math.random() * products.length)];
+        const randomTime = times[Math.floor(Math.random() * times.length)];
+
+        img.src = randomProduct.image;
+        msg.innerText = randomProduct.title;
+        document.getElementById('toast-time').innerText = randomTime;
+
+        toast.classList.remove('hidden');
+        setTimeout(() => {
+          toast.classList.add('hidden');
+        }, 4000);
+      }, 12000);
+    }
+
+    // -------------------------------------------------------------
+    // ANIMATED CHERRY BLOSSOM CANVAS
+    // -------------------------------------------------------------
+    function initSakuraCanvas() {
+      const canvas = document.getElementById('sakura-canvas');
+      const ctx = canvas.getContext('2d');
+
+      let width = (canvas.width = window.innerWidth);
+      let height = (canvas.height = window.innerHeight);
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+
+      // Petal Object
+      class Petal {
+        constructor() {
+          this.reset();
+        }
+
+        reset() {
+          this.x = Math.random() * width;
+          this.y = Math.random() * -height;
+          this.size = Math.random() * 8 + 6;
+          this.speedY = Math.random() * 1.2 + 0.8;
+          this.speedX = Math.random() * 0.8 - 0.4;
+          this.angle = Math.random() * 360;
+          this.spin = Math.random() * 0.03 - 0.015;
+          this.opacity = Math.random() * 0.6 + 0.3;
+        }
+
+        update() {
+          this.y += this.speedY;
+          this.x += Math.sin(this.y * 0.01) + this.speedX;
+          this.angle += this.spin;
+
+          if (this.y > height + 20) {
+            this.reset();
+          }
+        }
+
+        draw() {
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          ctx.rotate(this.angle);
+          ctx.globalAlpha = this.opacity;
+
+          // Soft pink gradient petal
+          const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, this.size);
+          grad.addColorStop(0, '#fbcfe8');
+          grad.addColorStop(0.6, '#f472b6');
+          grad.addColorStop(1, '#db2777');
+
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.ellipse(0, 0, this.size, this.size / 2, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+
+      // Generate Petals
+      const petals = Array.from({ length: 45 }, () => new Petal());
+
+      // Draw Tree Silhouette in Background
+      function drawSakuraTree() {
+        ctx.strokeStyle = 'rgba(40, 18, 55, 0.4)';
+        ctx.lineWidth = 14;
+        ctx.lineCap = 'round';
+
+        // Trunk
+        ctx.beginPath();
+        ctx.moveTo(width * 0.85, height);
+        ctx.quadraticCurveTo(width * 0.82, height * 0.6, width * 0.75, height * 0.3);
+        ctx.stroke();
+
+        // Major Branch
+        ctx.lineWidth = 8;
+        ctx.beginPath();
+        ctx.moveTo(width * 0.8, height * 0.55);
+        ctx.quadraticCurveTo(width * 0.6, height * 0.45, width * 0.45, height * 0.2);
+        ctx.stroke();
+
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.moveTo(width * 0.77, height * 0.4);
+        ctx.quadraticCurveTo(width * 0.85, height * 0.25, width * 0.92, height * 0.15);
+        ctx.stroke();
+      }
+
+      // Animation Loop
+      function render() {
+        ctx.clearRect(0, 0, width, height);
+
+        // Gentle Ambient Background Glow
+        const bgGrad = ctx.createRadialGradient(width / 2, height / 2, 100, width / 2, height / 2, width);
+        bgGrad.addColorStop(0, '#1a0b2e');
+        bgGrad.addColorStop(1, '#0d0614');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, width, height);
+
+        drawSakuraTree();
+
+        // Update & Draw Petals
+        petals.forEach(p => {
+          p.update();
+          p.draw();
+        });
+
+        requestAnimationFrame(render);
+      }
+
+      render();
+    }
+  </script>
+</body>
+</html>
